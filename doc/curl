@@ -1,0 +1,19 @@
+curl -X POST "http://localhost:18080/collections" \
+  -H "accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer user1" \
+  -d '{"name": "internal_docs", "metadata": {"description": "Коллекция для RAG"}}'
+
+
+{"uuid":"1eea8486-74b5-4749-b742-60b4b7a3230e","name":"internal_docs","metadata":{"description":"Коллекция для RAG","owner_id":"user1"}}%                             
+
+curl -X POST "http://localhost:18080/collections/1eea8486-74b5-4749-b742-60b4b7a3230e/documents" \
+  -H "accept: application/json" \
+  -H "Authorization: Bearer user1" \
+  -F "files=@/Users/kostiantynpopov/Documents/GitHub/print24/структура.txt"
+  -F 'metadatas_json=[{"source":"manual_upload","description":"Структура компании"}]'
+
+  {"success":true,"message":"12 document chunk(s) from 1 file(s) added successfully.","added_chunk_ids":["e7729d98-d447-4324-979e-e21a262c1084","ede6e7c3-bee9-4872-91c2-6ec0b921b148","d911250e-d09b-432b-9017-a738653ec17c","c14000ec-c8b8-457a-abaa-f735dcbe7894","dd991762-7bff-47e5-b188-698ed530b440","031c08ed-fa59-4abc-8fb3-eb079a2e2237","697f99ce-1e15-4dcc-97c3-d52af6a89d10","2f55df97-2b56-4a01-b431-4abe1b80d5c8","5d2d98a6-7465-471e-9710-a3f9d3256c4f","403012e6-cb1a-4cef-a50a-d78a1a4ad8a4","4abe3542-5f80-49b5-a609-594be1f6870f","007da591-1ded-4185-898a-645c2858bba7"]}
+
+
+  

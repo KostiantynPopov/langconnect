@@ -1,21 +1,23 @@
 services:
-  postgres:
+  langconnect-postgres:
     image: pgvector/pgvector:pg16
     container_name: langconnect-postgres
     restart: always
     ports:
-      - "5432:5432"
+      - "55432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./postgres-volume:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
-      interval: 5s
+      interval: 5m
       timeout: 5s
       retries: 5
+    networks:
+      - common
 
   api:
     build:
@@ -24,20 +26,26 @@ services:
     container_name: langconnect-api
     restart: always
     depends_on:
-      postgres:
+      langconnect-postgres:
         condition: service_healthy
     ports:
-      - "8080:8080"
+      - "18080:8080"
     env_file:
       - .env
     environment:
-      POSTGRES_HOST: postgres
+      POSTGRES_HOST: langconnect-postgres
       POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     volumes:
       - ./langconnect:/app/langconnect
+    networks:
+      - common
     
 volumes:
   postgres_data:
+
+networks:
+  common:
+    external: true
